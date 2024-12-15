@@ -1,0 +1,58 @@
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <button class="admin-btn">{{userInfo.role.name}}</button>
+    <div class="menu-item"></div>
+    <div class="menu-item"></div>
+    <div class="menu-item"></div>
+    <div class="menu-item"></div>
+  </aside>
+  <main class="main-content">
+    <header class="header">
+      <input type="text" placeholder="Search......" class="search-bar" />
+      <div *ngIf="!(userInfo.role.name === 'USER')">
+        <button class="add-user-btn" routerLink="register/admin">
+          <span>+</span> Add new User
+        </button>
+      </div>
+    </header>
+    <div class="table-container">
+      <table class="user-table" *ngIf="users && users.length > 0; else noData">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.address }}</td>
+            <td [class.status]="user.status === 'Approved'">{{ user.status }}</td>
+            <td>{{ user.createDate }}</td>
+            <td class="actions">
+              <button class="action-btn view" (click)="viewUser(user)">👁️</button>
+              <div *ngIf="!(userInfo.role.name === 'USER')">
+                <button class="action-btn edit" (click)="editUser(user)">✏️</button>
+                <button class="action-btn delete" (click)="deleteUser(user.email)">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <ng-template #noData>
+      <p class="no-data-message">No users found</p>
+    </ng-template>
+    <footer class="footer">
+      <img src="assets/images/earth-image.png" alt="Earth Image" class="footer-image" />
+      <p>¡La tecnología nos une!</p>
+    </footer>
+  </main>
+</div>

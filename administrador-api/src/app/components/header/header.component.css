@@ -1,0 +1,43 @@
+.contenedor_header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 100px;
+  align-items: center;
+  background-color: rgb(12, 98, 211);
+}
+
+.container-button{
+  width: 20%;
+}
+
+/* CSS */
+.button-43 {
+  background-color: #37AEE2;
+  border-color: #37AEE2;
+  border-radius: 20px;
+
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-size: 16px;
+  justify-content: center;
+  padding: 1rem 1.75rem;
+  text-decoration: none;
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-43:hover {
+  background-color: #1E96C8;
+  border-color: #1E96C8;
+}
+
+@media (min-width: 768px) {
+  .button-43 {
+    padding: 1rem 2rem;
+  }
+}
