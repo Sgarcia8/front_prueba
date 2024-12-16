@@ -1,4 +1,4 @@
-import { SharedService} from './../../services/shared-service.service';
+import { SharedService } from './../../services/shared-service.service';
 import { Router } from '@angular/router';
 import { User } from '../../interfaces/User';
 import { JwtService } from './../../services/jwt.service';
@@ -13,6 +13,9 @@ import { Component, OnInit } from '@angular/core';
 
 export class DashboardComponent implements OnInit {
 
+
+  allUsers: User[] = []; // Lista de usuarios sin filtrar
+  searchTerm: string = ''; // Término de búsqueda
   users: User[] = [];
 
   constructor(private service: JwtService, private router: Router, private sharedService: SharedService) { }
@@ -25,8 +28,7 @@ export class DashboardComponent implements OnInit {
     if (confirmDelete) {
       this.service.deleteUser(email).subscribe({
         next: (data) => {
-          console.log(data)
-          this.users = this.users.filter(user => user.email !== email); // Filtra y elimina el usuario de la lista
+          this.allUsers = this.users.filter(user => user.email !== email); // Filtra y elimina el usuario de la lista
         },
         error: (err) => console.error('Error:', err)
       })
@@ -44,6 +46,30 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/dashboard/view']); // Navega al componente de registro
   }
 
+  // Buscar cuando se presiona Enter
+  onSearchEnter() {
+    if (this.searchTerm.trim() === '') {
+      this.users = this.allUsers; // Si el campo de búsqueda está vacío, mostrar todos los usuarios
+    } else {
+      this.filterUsers();
+    }
+  }
+
+  // Filtrar usuarios por nombre
+  filterUsers() {
+    this.users = this.allUsers.filter(user =>
+      user.name.includes(this.searchTerm)
+    );
+  }
+
+  // Propiedad que devuelve los usuarios filtrados
+  get filteredUsers() {
+    return this.users;
+  }
+
+
+
+
   userInfo: any;
 
   ngOnInit(): void {
@@ -51,8 +77,7 @@ export class DashboardComponent implements OnInit {
     this.userInfo = JSON.parse(localStorage.getItem('user') || '{}');
     this.service.loadUsers().subscribe({
       next: (data) => {
-        this.users = data;
-        console.log(this.users)
+        this.allUsers = data;
       },
       error: (err) => console.error('Error:', err)
     })

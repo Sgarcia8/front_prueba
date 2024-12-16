@@ -8,7 +8,7 @@
   </aside>
   <main class="main-content">
     <header class="header">
-      <input type="text" placeholder="Search......" class="search-bar" />
+      <input type="text" placeholder="Search..." class="search-bar" [(ngModel)]="searchTerm"(keydown.enter)="onSearchEnter()" />
       <div *ngIf="!(userInfo.role.name === 'USER')">
         <button class="add-user-btn" routerLink="register/admin">
           <span>+</span> Add new User
@@ -51,7 +51,7 @@
       <p class="no-data-message">No users found</p>
     </ng-template>
     <footer class="footer">
-      <img src="assets/images/earth-image.png" alt="Earth Image" class="footer-image" />
+      <img src="assets/icons/icon2.png" alt="Earth Image" class="footer-image" />
       <p>¡La tecnología nos une!</p>
     </footer>
   </main>

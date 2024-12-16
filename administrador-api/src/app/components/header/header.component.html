@@ -1,14 +1,14 @@
 <div class="contenedor_header">
     <div *ngIf="!isAdministrator()">
-        <img src="" alt="img" routerLink="">
+        <img src="assets/icons/icon1.png" alt="img" routerLink="">
     </div>
     <div *ngIf="isAdministrator()">
-        <img src="" alt="img" routerLink="/dashboard">
+        <img src="assets/icons/icon1.png" alt="img" routerLink="/dashboard">
     </div>
     <div class="container-button" *ngIf="isHomePage() === 1">
         <button class="button-43" routerLink="register">Register</button>
     </div>
     <div class="container-button" *ngIf="isHomePage() === 2">
-        <button class="button-43">{{userInfo.name}}</button>
+        <button class="button-43" (click)="logout()">{{userInfo.name}}</button>
     </div>
 </div>

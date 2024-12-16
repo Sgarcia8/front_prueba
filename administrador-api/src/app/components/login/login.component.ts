@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
         console.log(response)
         if (response.token != null) {
 
-          alert("Hello, Your token is " + response.token);
+          alert("Se ha logueado con exito");
           const jwtToken = response.token;
           const user = response.user;
           localStorage.setItem('jwt', jwtToken);
