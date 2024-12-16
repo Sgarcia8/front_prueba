@@ -42,15 +42,16 @@ export class HeaderComponent implements OnInit {
     const confirmDelete = window.confirm('¿Estás seguro de que quieres cerrar tu sesión?');
     if (confirmDelete) {
       localStorage.removeItem('jwt'); // Elimina el token JWT
-      localStorage.removeItem('user'); // Elimina cualquier otro dato almacenado (como el usuario)
+      localStorage.removeItem('user'); // Elimina el usuario
       this.router.navigate(['']);
     }
   }
 
   isAdministrator(): boolean {
+    //Si el usuario esta logueado lo que hace es restablecer la información para que la vista de registro se pueda reutilizar
     if (this.router.url === '/dashboard/register/admin' || this.router.url === '/dashboard/view' || this.router.url === '/dashboard/edit' || this.router.url === '/dashboard') {
       this.sharedService.clearUser();
-      this.sharedService.setMode("");
+      this.sharedService.setMode(""); 
       return true;
     }
     return false;

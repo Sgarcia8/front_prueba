@@ -11,6 +11,7 @@ export class JwtService {
 
   constructor(private http: HttpClient) { }
 
+  //Consume el backend para registrar a un usuario
   register(signRequest:any): Observable<any>{
     return this.http.post(BASE_URL+'auth/register',signRequest)
   }

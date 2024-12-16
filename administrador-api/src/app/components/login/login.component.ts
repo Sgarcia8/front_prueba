@@ -27,18 +27,20 @@ export class LoginComponent implements OnInit {
   }
 
   submitForm() {
+    
     this.service.login(this.loginForm.value).subscribe(
       (response) => {
-        console.log(response)
         if (response.token != null) {
 
           alert("Se ha logueado con exito");
           const jwtToken = response.token;
           const user = response.user;
-          localStorage.setItem('jwt', jwtToken);
+          localStorage.setItem('jwt', jwtToken); //Se almacenan los datos en el localStorague para ser usados posteriormente
           localStorage.setItem('user', JSON.stringify(user))
           this.router.navigateByUrl("/dashboard");
         }
+      },(err) => {
+        alert("Error al iniciar sesión, verifique sus credenciales");
       }
     )
   }

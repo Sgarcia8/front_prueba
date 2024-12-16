@@ -39,12 +39,12 @@ export class DashboardComponent implements OnInit {
   editUser(user: any) {
     this.sharedService.setMode("edit");
     this.sharedService.setUser(user); // Almacena el usuario seleccionado
-    this.router.navigate(['/dashboard/edit']); // Navega al componente de registro
+    this.router.navigate(['/dashboard/edit']); // Navega al componente de registro para la edición
   }
   viewUser(user: any) {
     this.sharedService.setMode("view");
     this.sharedService.setUser(user); // Almacena el usuario seleccionado
-    this.router.navigate(['/dashboard/view']); // Navega al componente de registro
+    this.router.navigate(['/dashboard/view']); // Navega al componente de registro para la visualización
   }
 
   // Buscar cuando se presiona Enter

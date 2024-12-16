@@ -32,7 +32,7 @@
         </div>
   
         <!-- Mostrar el campo de rol solo si el usuario es admin y está en modo edición o registro -->
-        <div *ngIf="(mode === 'edit' || mode === '')">
+        <div *ngIf="(mode === 'edit' || (mode === '' && isAdmin) )">
           <div class="form-group">
             <label for="role">Rol:</label>
             <select id="role" formControlName="role" class="form-control" >
@@ -42,7 +42,7 @@
         </div>
   
         <!-- Mostrar el campo de estado si es admin o en modo vista -->
-        <div *ngIf="(mode === 'edit' || mode === '')">
+        <div *ngIf="(mode === 'edit' || (mode === '' && isAdmin) )">
           <div class="form-group">
             <label for="status">Estado:</label>
             <select id="status" formControlName="status" class="form-control" >
