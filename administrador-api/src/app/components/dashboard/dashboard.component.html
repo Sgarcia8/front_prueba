@@ -16,7 +16,7 @@
       </div>
     </header>
     <div class="table-container">
-      <table class="user-table" *ngIf="users && users.length > 0; else noData">
+      <table class="user-table" *ngIf="allUsers && allUsers.length > 0; else noData">
         <thead>
           <tr>
             <th>ID</th>

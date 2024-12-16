@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
       this.service.deleteUser(email).subscribe({
         next: (data) => {
           this.allUsers = this.users.filter(user => user.email !== email); // Filtra y elimina el usuario de la lista
+          this.users = this.users.filter(user => user.email !== email); // Filtra y elimina el usuario de la lista
         },
         error: (err) => console.error('Error:', err)
       })
@@ -48,25 +49,13 @@ export class DashboardComponent implements OnInit {
 
   // Buscar cuando se presiona Enter
   onSearchEnter() {
-    if (this.searchTerm.trim() === '') {
-      this.users = this.allUsers; // Si el campo de búsqueda está vacío, mostrar todos los usuarios
+    // Filtra los usuarios según el término de búsqueda
+    if (this.searchTerm.trim() !== '') {
+      this.users = this.allUsers.filter(user => user.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
     } else {
-      this.filterUsers();
+      this.users = this.allUsers; // Si no hay búsqueda, muestra todos los usuarios
     }
   }
-
-  // Filtrar usuarios por nombre
-  filterUsers() {
-    this.users = this.allUsers.filter(user =>
-      user.name.includes(this.searchTerm)
-    );
-  }
-
-  // Propiedad que devuelve los usuarios filtrados
-  get filteredUsers() {
-    return this.users;
-  }
-
 
 
 
@@ -78,6 +67,7 @@ export class DashboardComponent implements OnInit {
     this.service.loadUsers().subscribe({
       next: (data) => {
         this.allUsers = data;
+        this.users = data;
       },
       error: (err) => console.error('Error:', err)
     })
