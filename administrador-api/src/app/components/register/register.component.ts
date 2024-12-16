@@ -149,7 +149,7 @@ export class RegisterComponent implements OnInit {
         );
       }
       else{
-        console.log(payload)
+        //Entra siempre que se edita un usuario
         this.service.editUser(this.userData.id,payload).subscribe(
           (response) => {
             alert("Usuario editado con exito")

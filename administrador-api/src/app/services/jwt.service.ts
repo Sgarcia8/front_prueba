@@ -40,7 +40,7 @@ export class JwtService {
 
   }
 
-
+  //Recupera la información del token del localStorage para agregarla a al header de envio
   private createAuthorizationHeader() {
       const jwtToken = localStorage.getItem('jwt');
       if (jwtToken) {
