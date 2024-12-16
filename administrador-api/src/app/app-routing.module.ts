@@ -9,6 +9,8 @@ const routes: Routes = [
   {path: "register", component: RegisterComponent},
   {path: "dashboard", component: DashboardComponent},
   {path: "dashboard/register/admin", component: RegisterComponent},
+  {path: "dashboard/view", component: RegisterComponent},
+  {path: "dashboard/edit", component: RegisterComponent}
 
 ];
 

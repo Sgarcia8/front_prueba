@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SharedService } from '../../services/shared-service.service';
 
 @Component({
   standalone: false,
@@ -12,7 +13,7 @@ export class HeaderComponent implements OnInit {
   currentRoute: string = '';
   userInfo: any;
 
-  constructor(private router: Router){}
+  constructor(private router: Router,  private sharedService: SharedService){}
 
   ngOnInit(): void {
     // Inicializamos el valor de la ruta al momento de cargar el componente
@@ -37,7 +38,9 @@ export class HeaderComponent implements OnInit {
   }
 
   isAdministrator(): boolean{
-    if(this.router.url === '/dashboard/register/admin'){
+    if(this.router.url === '/dashboard/register/admin' || this.router.url === '/dashboard/view' || this.router.url === '/dashboard/edit' || this.router.url === '/dashboard'){
+      this.sharedService.clearUser();
+      this.sharedService.setMode("");
       return true;
     }
     return false;

@@ -1,3 +1,5 @@
+import { SharedService} from './../../services/shared-service.service';
+import { Router } from '@angular/router';
 import { User } from '../../interfaces/User';
 import { JwtService } from './../../services/jwt.service';
 import { Component, OnInit } from '@angular/core';
@@ -13,14 +15,14 @@ export class DashboardComponent implements OnInit {
 
   users: User[] = [];
 
-  constructor(private service: JwtService,){}
+  constructor(private service: JwtService, private router: Router, private sharedService: SharedService) { }
 
 
   deleteUser(email: string) {
 
     // Mostrar cuadro de confirmación
     const confirmDelete = window.confirm('¿Estás seguro de que quieres eliminar a este usuario?');
-    if(confirmDelete){
+    if (confirmDelete) {
       this.service.deleteUser(email).subscribe({
         next: (data) => {
           console.log(data)
@@ -29,13 +31,17 @@ export class DashboardComponent implements OnInit {
         error: (err) => console.error('Error:', err)
       })
     }
-  
+
   }
-  editUser(_t25: any) {
-    throw new Error('Method not implemented.');
+  editUser(user: any) {
+    this.sharedService.setMode("edit");
+    this.sharedService.setUser(user); // Almacena el usuario seleccionado
+    this.router.navigate(['/dashboard/edit']); // Navega al componente de registro
   }
-  viewUser(_t25: any) {
-    throw new Error('Method not implemented.');
+  viewUser(user: any) {
+    this.sharedService.setMode("view");
+    this.sharedService.setUser(user); // Almacena el usuario seleccionado
+    this.router.navigate(['/dashboard/view']); // Navega al componente de registro
   }
 
   userInfo: any;

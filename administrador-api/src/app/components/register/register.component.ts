@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { JwtService } from '../../services/jwt.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SharedService } from '../../services/shared-service.service';
 
 type Role = 'USER' | 'ADMIN';
 
@@ -13,8 +14,10 @@ type Role = 'USER' | 'ADMIN';
 })
 export class RegisterComponent implements OnInit {
 
+  mode: string = "";
   registerForm!: FormGroup;
   isAdmin: boolean = false;  // Para saber si es admin
+  userData: any; // Datos del usuario (si vienen de la navegación)
 
   // Opciones para el campo "role" y "status"
   roles = ['USER', 'ADMIN'];
@@ -24,10 +27,16 @@ export class RegisterComponent implements OnInit {
     private service: JwtService,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
+    this.userData = this.sharedService.getUser(); // Recupera el usuario desde el servicio
+    this.mode = this.sharedService.getMode();
+    console.log(this.mode)
+
+
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required]],
@@ -44,7 +53,37 @@ export class RegisterComponent implements OnInit {
       this.isAdmin = url.some(segment => segment.path === 'admin');  // Si la ruta es /register/admin, isAdmin será true
     });
 
-    if (this.isAdmin) {
+    if (this.mode === "edit") {
+      this.registerForm.enable();
+      console.log(this.userData)
+      this.registerForm.patchValue({
+        name: this.userData.name,
+        email: this.userData.email,
+        password: this.userData.password,
+        confirmPassword: "",
+        address: this.userData.address,
+        role: this.userData.role.name, // Campo role
+        status: this.userData.status, // Campo status
+        tokenRevoked: this.userData.tokenRevoked,
+        createDate: this.userData.createDate
+      }); // Llena el formulario con los datos
+    }
+
+    else if (this.mode === "view") {
+      this.registerForm.patchValue({
+        name: this.userData.name,
+        email: this.userData.email,
+        address: this.userData.address,
+        role: this.userData.role.name, // Campo role
+        status: this.userData.status, // Campo status
+      }); // Llena el formulario con los datos
+      this.registerForm.disable(); // Deshabilita los campos si es solo lectura
+    }
+
+
+    else if (this.isAdmin) {
+
+      this.registerForm.enable();
       this.registerForm.addControl('role', this.fb.control('', Validators.required));
       this.registerForm.addControl('status', this.fb.control('', Validators.required));
       // Asignamos valores por defecto a campos no visibles
@@ -53,6 +92,7 @@ export class RegisterComponent implements OnInit {
         createDate: new Date()
       });
     }
+
     else {
       // Asignamos valores por defecto a campos no visibles
       this.registerForm.patchValue({
@@ -91,21 +131,42 @@ export class RegisterComponent implements OnInit {
         ...formData,
         role: { id: roleId },  // Asignar el role con el id
       };
-      this.service.register(payload).subscribe(
-        (response) => {
-          alert("Usuario creado con exito")
-          if (this.isAdmin) {
-            this.router.navigate(["/dashboard"])
+      if(this.mode === ''){
+        this.service.register(payload).subscribe(
+          (response) => {
+            alert("Usuario creado con exito")
+            if (this.isAdmin) {
+              this.router.navigate(["/dashboard"])
+            }
+            else {
+              this.router.navigate([""])
+            }
+  
+          },
+          (error) => {
+            alert("El usuario ya existe en la base de datos")
           }
-          else {
-            this.router.navigate([""])
+        );
+      }
+      else{
+        console.log(payload)
+        this.service.editUser(this.userData.id,payload).subscribe(
+          (response) => {
+            alert("Usuario editado con exito")
+            console.log(response)
+            if (this.mode === 'edit') {
+              this.router.navigate(["/dashboard"])
+            }
+            else {
+              this.router.navigate([""])
+            }
+  
+          },
+          (error) => {
+            alert("El usuario no se pudo editar")
           }
-
-        },
-        (error) => {
-          alert("El usuario ya existe en la base de datos")
-        }
-      );
+        );
+      }
     }
   }
 

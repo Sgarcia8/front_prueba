@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const BASE_URL = ["http://localhost:8080/"]
+const BASE_URL = "http://localhost:8080/";
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +22,20 @@ export class JwtService {
   loadUsers(): Observable<any>{
     const headers = this.createAuthorizationHeader(); // Crear las cabeceras
     const options = headers ? { headers } : {}; // Solo incluir cabeceras si existen
-    return this.http.get(BASE_URL + 'api/users/public', options)
+    return this.http.get(BASE_URL + 'api/users', options)
+  }
+
+  editUser(id:number, userData: any): Observable<any>{
+    const headers = this.createAuthorizationHeader(); // Crear las cabeceras
+    const options = headers ? { headers } : {}; // Solo incluir cabeceras si existen
+    return this.http.put(BASE_URL + 'api/users/actualizar/'+ id, userData, options)
   }
 
   deleteUser(email:string): Observable<any>{
     const headers = this.createAuthorizationHeader(); // Crear las cabeceras
     const options = headers ? { headers } : {}; // Solo incluir cabeceras si existen
     console.log(options)
-    return this.http.delete(BASE_URL + 'api/users/admin/' + email, options)
+    return this.http.delete(BASE_URL + 'api/users/' + email, options)
 
   }
 
